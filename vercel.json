@@ -1,0 +1,6 @@
+{
+  "installCommand": "cd meeting-buddy-main && npm install",
+  "buildCommand": "cd meeting-buddy-main && npm run build",
+  "outputDirectory": "meeting-buddy-main/.vercel/output",
+  "framework": null
+}
