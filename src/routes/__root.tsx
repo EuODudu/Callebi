@@ -81,13 +81,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: `${OWNER_NAME} — Agende seu compromisso` },
       {
         name: "description",
-        content: `Marque um horário com o ${OWNER_NAME}. Callebi, assistente virtual, filtra a agenda enquanto ele trabalha, bebe ou está no show.`,
+        content: `Marque um horário com o ${OWNER_NAME}. Callebi, assistente virtual, filtra a agenda enquanto ele trabalha, bebe ou vai pro rodeio.`,
       },
       { name: "author", content: OWNER_NAME },
       { property: "og:title", content: `${OWNER_NAME} — Agende seu compromisso` },
       {
         property: "og:description",
-        content: `Agende com o ${OWNER_NAME} antes que ele suma pro happy hour ou pro palco.`,
+        content: `Agende com o ${OWNER_NAME} antes que ele suma pro happy hour ou pro rodeio.`,
       },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "pt_BR" },

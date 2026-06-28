@@ -20,7 +20,7 @@ function firstName(nome: string): string {
 const greetings: Record<number, readonly CallebiLine[]> = {
   1: [
     {
-      text: `Oi! Sou o Callebi, assistente do ${OWNER_NAME}. Ele tá sempre ocupado — trabalhando, bebendo ou no show. Me conta quem é você.`,
+      text: `Oi! Sou o Callebi, assistente do ${OWNER_NAME}. Ele tá sempre ocupado — deadline, boteco ou rodeio. Me conta quem é você.`,
       mood: "happy",
     },
     {
@@ -34,11 +34,15 @@ const greetings: Record<number, readonly CallebiLine[]> = {
   ],
   2: [
     {
-      text: `Agora a parte difícil: achar um dia em que o ${OWNER_NAME} NÃO esteja em deadline, bar ou palco.`,
+      text: `Atenção: dias 3, 4, 8, 9, 10 e 11 de julho o ${OWNER_NAME} tá no rodeio 🤠. O resto, a gente tenta encaixar.`,
+      mood: "hype",
+    },
+    {
+      text: `Escolhe o dia. As datas com chapéu de cowboy? Rodeio. Pode tocar que eu conto a piada completa.`,
       mood: "wink",
     },
     {
-      text: "Escolhe o dia. As datas riscadas? É melhor nem perguntar... mas pode tocar pra saber 😏",
+      text: `Julho é mês tenso: rodeio no meio e ${OWNER_NAME} fingindo que ainda trabalha nos outros dias.`,
       mood: "drunk",
     },
   ],
@@ -48,7 +52,7 @@ const greetings: Record<number, readonly CallebiLine[]> = {
       mood: "happy",
     },
     {
-      text: `Quase lá. Me dá os pormenores que eu já aviso o ${OWNER_NAME} — se ele não estiver no meio de um show.`,
+      text: `Quase lá. Me dá os pormenores que eu já aviso o ${OWNER_NAME} — se ele não estiver na fila do chopp.`,
       mood: "thinking",
     },
   ],
@@ -130,9 +134,9 @@ export function reactToMotivo(text: string): CallebiLine | null {
       text: `Coisa séria, hein. O ${OWNER_NAME} vive trabalhando demais — vai encaixar.`,
       mood: "thinking",
     };
-  if (/show|palco|música|musica|banda|concerto/.test(t))
+  if (/rodeio|vaquejada|feira|arquibancada|country/.test(t))
     return {
-      text: `Show? O ${OWNER_NAME} tá sempre em algum. Bora alinhar horário.`,
+      text: `Rodeio? Em julho nem me fala — o ${OWNER_NAME} some por uma semana inteira. 🤠`,
       mood: "hype",
     };
   if (/conselho|ajuda|desabaf|terapia|conversa/.test(t))
@@ -175,7 +179,7 @@ export function reactToHorario(h: string): CallebiLine {
     };
   if (hour >= 19)
     return {
-      text: `${h} — horário nobre. O ${OWNER_NAME} já pode estar no bar ou no after do show. 😏`,
+      text: `${h} — horário nobre. O ${OWNER_NAME} já pode estar no bar ou na saideira. 😏`,
       mood: "drunk",
     };
   if (hour >= 13 && hour < 15)
@@ -208,9 +212,9 @@ export function reactToLocal(local: string): CallebiLine | null {
       text: `Escritório... o ${OWNER_NAME} vive lá. Mas leva café decente.`,
       mood: "thinking",
     };
-  if (/show|palco|arena|teatro|estádio|estadio/.test(t))
+  if (/rodeio|arena|feira|parque de exposi/.test(t))
     return {
-      text: `Show? Clássico do ${OWNER_NAME}. Já tô avisando que ele pode chegar atrasado.`,
+      text: `Rodeio? Em julho o ${OWNER_NAME} já marcou presença. Agenda fechada nesses dias.`,
       mood: "hype",
     };
   return { text: "Lugar anotado. Já imagino o Eduardo aparecendo (ou não).", mood: "happy" };
@@ -229,7 +233,7 @@ export function reactToParticipantes(n: number): CallebiLine | null {
       mood: "happy",
     };
   return {
-    text: `Eita, quase um show. O ${OWNER_NAME} vai precisar de agenda dupla.`,
+    text: `Eita, turma grande! O ${OWNER_NAME} vai precisar de mesa longa e paciência.`,
     mood: "hype",
   };
 }
@@ -249,9 +253,9 @@ export function reactToReview(): CallebiLine {
 export function reactToSent(): CallebiLine {
   return {
     text: pick([
-      `Mandado! Abri o WhatsApp. Se o ${OWNER_NAME} sumir, tá trabalhando, bebendo ou no show. 🍻`,
+      `Mandado! Abri o WhatsApp. Se o ${OWNER_NAME} sumir, tá em deadline, no bar ou no rodeio. 🍻`,
       `Enviado! Agora é com o ${OWNER_NAME} — eu só sou o assistente bonito.`,
-      `Pronto! O ${OWNER_NAME} deve responder... quando sair do deadline.`,
+      `Pronto! O ${OWNER_NAME} deve responder... quando sair da reunião infinita.`,
     ]),
     mood: "drunk",
   };
@@ -270,8 +274,8 @@ const idleLines: readonly CallebiLine[] = [
   { text: "Cochilei? Não... só descansando os olhos. Continua aí.", mood: "sleepy" },
   { text: "Psiu! Não me deixa falando sozinho.", mood: "wink" },
   {
-    text: `Enquanto isso o ${OWNER_NAME} deve estar em algum show. Segue preenchendo.`,
-    mood: "hype",
+    text: `Enquanto isso o ${OWNER_NAME} deve estar numa call eterna. Segue preenchendo.`,
+    mood: "thinking",
   },
   { text: "No escuro eu brilho menos, mas organizo agenda igual. Segue aí.", mood: "wink" },
   {
@@ -306,7 +310,7 @@ const pokeLines: readonly CallebiLine[] = [
   },
   { text: "Isso aí é carinho ou você tá testando se eu sou real?", mood: "happy" },
   {
-    text: `Mais um clique e eu conto quantos shows o ${OWNER_NAME} tem esse mês.`,
+    text: `Mais um clique e eu conto quantas vezes o ${OWNER_NAME} adiou reunião esse mês.`,
     mood: "drunk",
   },
   { text: "No escuro eu pareço mais misterioso. Ou assistente cansado. Tanto faz.", mood: "wink" },
@@ -345,7 +349,7 @@ export function reactToValidationErrors(errors: Record<string, string>): Callebi
       mood: "happy",
     },
     data: {
-      text: `Ô, escolhe uma data livre! Nessa o ${OWNER_NAME} tá ocupado demais.`,
+      text: `Ô, escolhe uma data livre! No rodeio (3, 4, 8, 9, 10 e 11/jul) o ${OWNER_NAME} não atende.`,
       mood: "drunk",
     },
     horario: { text: "Falta o horário! Não vou adivinhar que horas você quer.", mood: "sleepy" },
@@ -353,7 +357,10 @@ export function reactToValidationErrors(errors: Record<string, string>): Callebi
       text: `Sem local o ${OWNER_NAME} para no primeiro bar que aparecer.`,
       mood: "drunk",
     },
-    duracao: { text: "Quanto tempo vai durar? 5 min ou até o Eduardo sumir pro show?", mood: "thinking" },
+    duracao: {
+      text: "Quanto tempo vai durar? 5 min ou até o Eduardo sumir pro happy hour?",
+      mood: "thinking",
+    },
     participantes: {
       text: "Quantas pessoas? Sozinho com o Eduardo eu desconfio 👀",
       mood: "wink",
@@ -380,7 +387,7 @@ export function poseForStep(step: number): CallebiPose {
 // ── Modo escuro / claro ──────────────────────────────────────────────────
 const darkModeLines: readonly CallebiLine[] = [
   {
-    text: `Pronto! Clima de boteco fechado — estilo ${OWNER_NAME} depois do show.`,
+    text: `Pronto! Clima de boteco fechado — estilo ${OWNER_NAME} depois da feira.`,
     mood: "drunk",
   },
   { text: "Escureci tudo. Luz forte é coisa de quem acordou cedo.", mood: "wink" },

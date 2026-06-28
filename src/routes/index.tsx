@@ -23,7 +23,7 @@ export const Route = createFileRoute("/")({
       { title: `Agendamento — ${OWNER_NAME}` },
       {
         name: "description",
-        content: `Marque um horário com o ${OWNER_NAME}. O Callebi organiza a agenda — quando ele não está trabalhando, bebendo ou no show.`,
+        content: `Marque um horário com o ${OWNER_NAME}. O Callebi organiza a agenda — quando ele não está em deadline, no bar ou no rodeio.`,
       },
       { property: "og:title", content: `Agendamento — ${OWNER_NAME}` },
       {
@@ -92,8 +92,8 @@ function Wizard() {
             via Callebi, assistente virtual
           </p>
           <p className="mt-3 text-sm text-muted-foreground">
-            Marca um horário — o {OWNER_NAME} tá sempre ocupado trabalhando, bebendo por aí ou no
-            show. Eu organizo por aqui.
+            Marca um horário — o {OWNER_NAME} tá sempre ocupado com trabalho, boteco ou rodeio em
+            julho. Eu organizo por aqui.
           </p>
         </header>
 
@@ -136,8 +136,8 @@ function Wizard() {
 
             <div className="mt-6 flex flex-col items-center gap-2 lg:items-start">
               <p className="text-center text-xs text-muted-foreground lg:text-left">
-                Ao enviar, cai no Zap do {OWNER_NAME}. Se demorar, ele tá em deadline, no bar ou no
-                palco. 🍻
+                Ao enviar, cai no Zap do {OWNER_NAME}. Se demorar, ele tá em reunião, no bar ou no
+                rodeio. 🍻
               </p>
               {hasDraftContent(booking) && (
                 <button

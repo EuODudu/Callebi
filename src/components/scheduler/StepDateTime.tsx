@@ -4,7 +4,11 @@ import { Calendar } from "@/components/ui/calendar";
 import { ptBR } from "date-fns/locale";
 import { format } from "date-fns";
 import { horarios, dateTimeSchema, collectZodErrors, type BookingState } from "@/lib/scheduler/types";
-import { getBlockedDateReasons } from "@/lib/scheduler/blockedDates";
+import {
+  getBlockedDateReasons,
+  getCalendarDefaultMonth,
+  RODEIO_YEAR,
+} from "@/lib/scheduler/blockedDates";
 import { useCallebi } from "@/components/scheduler/Callebi";
 import {
   reactToBlockedDate,
@@ -21,8 +25,6 @@ type Props = {
   onNext: () => void;
 };
 
-// Só datas passadas ficam realmente desabilitadas. As datas ocupadas do
-// Eduardo continuam clicáveis de propósito — o toque revela a piada
 function isPast(d: Date) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -33,11 +35,11 @@ export function StepDateTime({ data, onChange, onBack, onNext }: Props) {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const blockedReasons = useMemo(() => getBlockedDateReasons(), []);
   const blockedKeys = useMemo(() => new Set(Object.keys(blockedReasons)), [blockedReasons]);
-  // Mensagem revelada ao TOCAR numa data bloqueada (funciona no celular).
   const [revealed, setRevealed] = useState<string | null>(null);
-  // Pré-visualização no hover (bônus pra quem usa mouse).
   const [hoverMsg, setHoverMsg] = useState<string | null>(null);
   const { speak } = useCallebi();
+
+  const defaultMonth = data.data ?? getCalendarDefaultMonth();
 
   const submit = () => {
     const result = dateTimeSchema.safeParse(data);
@@ -52,7 +54,7 @@ export function StepDateTime({ data, onChange, onBack, onNext }: Props) {
   };
 
   const handleSelect = (d: Date | undefined) => {
-    if (!d) return; // ignora "desmarcar" tocando de novo
+    if (!d) return;
     const key = format(d, "yyyy-MM-dd");
     if (blockedKeys.has(key)) {
       const reason = blockedReasons[key];
@@ -73,10 +75,11 @@ export function StepDateTime({ data, onChange, onBack, onNext }: Props) {
       <div>
         <p className="mb-1 text-sm font-medium">Quando você quer ver o {OWNER_NAME}?</p>
         <p className="mb-3 text-xs text-muted-foreground">
-          Toque (ou passe o mouse) nas datas riscadas pra descobrir onde ele vai estar 🍻
+          Em julho de {RODEIO_YEAR}, dias <strong className="text-amber-600 dark:text-amber-400">3, 4, 8, 9, 10 e 11</strong>{" "}
+          ele tá no rodeio 🤠 — toque nas datas marcadas pra ver a desculpa oficial.
         </p>
         <div
-          className="flex justify-center rounded-lg border bg-card p-2"
+          className="flex justify-center overflow-hidden rounded-lg border bg-card p-2"
           onMouseLeave={() => setHoverMsg(null)}
         >
           <Calendar
@@ -85,13 +88,13 @@ export function StepDateTime({ data, onChange, onBack, onNext }: Props) {
             selected={data.data}
             onSelect={handleSelect}
             disabled={isPast}
-            defaultMonth={data.data ?? new Date()}
-            className="pointer-events-auto"
+            defaultMonth={defaultMonth}
+            className="pointer-events-auto w-full max-w-[min(100%,20rem)]"
             modifiers={{
-              drinking: (d) => blockedKeys.has(format(d, "yyyy-MM-dd")),
+              rodeio: (d) => blockedKeys.has(format(d, "yyyy-MM-dd")),
             }}
             modifiersClassNames={{
-              drinking: "line-through opacity-60 hover:opacity-100 cursor-pointer",
+              rodeio: "callebi-rodeio-day",
             }}
             onDayMouseEnter={(d) => {
               const key = format(d, "yyyy-MM-dd");
@@ -104,8 +107,7 @@ export function StepDateTime({ data, onChange, onBack, onNext }: Props) {
             <span className="italic text-primary">{activeMsg}</span>
           ) : (
             <span className="text-muted-foreground">
-              Datas riscadas? O {OWNER_NAME} tá ocupado — trabalhando, bebendo ou no show. Toca pra
-              ver o motivo.
+              Datas com 🤠? O {OWNER_NAME} tá no rodeio — sem agenda nesses dias. Escolhe outro.
             </span>
           )}
         </div>
@@ -115,8 +117,8 @@ export function StepDateTime({ data, onChange, onBack, onNext }: Props) {
       <div>
         <p className="mb-1 text-sm font-medium">A que horas?</p>
         <p className="mb-3 text-xs text-muted-foreground">
-          Antes das 8h o {OWNER_NAME} ainda tá no travesseiro, depois das 20h pode já estar no bar
-          ou no after. Escolha sabiamente.
+          Antes das 8h o {OWNER_NAME} ainda tá no travesseiro, depois das 20h pode já estar no bar.
+          Escolha sabiamente.
         </p>
         <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
           {horarios.map((h) => {

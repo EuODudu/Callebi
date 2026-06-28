@@ -31,7 +31,7 @@ export function useCallebi(): CallebiApi {
 
 const FIRST_LINE: SpokenLine = {
   id: 0,
-  text: `Oi! Sou o Callebi, assistente virtual do ${OWNER_NAME}. Ele tá sempre ocupado — trabalhando, bebendo ou no show. Bora agendar?`,
+  text: `Oi! Sou o Callebi, assistente virtual do ${OWNER_NAME}. Ele tá sempre ocupado — trabalhando, bebendo ou no rodeio. Bora agendar?`,
   mood: "happy",
 };
 
@@ -154,18 +154,19 @@ export function CallebiStage({ step, layout = "inline" }: { step: number; layout
   return (
     <div
       className={[
-        "relative overflow-hidden rounded-3xl border shadow-sm backdrop-blur-sm transition-shadow duration-300",
-        "border-amber-800/35 bg-gradient-to-br from-stone-900/90 via-card to-amber-950/40",
-        "dark:border-amber-700/30 dark:from-stone-950/80 dark:via-card dark:to-amber-950/50",
+        "callebi-stage relative overflow-hidden rounded-3xl border shadow-sm transition-shadow duration-300",
+        "border-amber-800/35 bg-card",
+        "sm:backdrop-blur-sm sm:bg-gradient-to-br sm:from-stone-900/90 sm:via-card sm:to-amber-950/40",
+        "dark:border-amber-700/30 dark:sm:from-stone-950/80 dark:sm:via-card dark:sm:to-amber-950/50",
         isSidebar ? "p-3 sm:p-4" : "p-4 sm:p-6",
       ].join(" ")}
     >
       <div
-        className="pointer-events-none absolute -left-8 -top-8 h-32 w-32 rounded-full bg-amber-300/20 blur-2xl"
+        className="pointer-events-none absolute -left-8 -top-8 hidden h-32 w-32 rounded-full bg-amber-300/20 blur-2xl sm:block"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute -bottom-6 -right-6 h-28 w-28 rounded-full bg-orange-400/15 blur-2xl"
+        className="pointer-events-none absolute -bottom-6 -right-6 hidden h-28 w-28 rounded-full bg-orange-400/15 blur-2xl sm:block"
         aria-hidden
       />
 
@@ -203,16 +204,16 @@ export function CallebiStage({ step, layout = "inline" }: { step: number; layout
 
         <div
           key={line.id}
-          className={`callebi-pop relative w-full flex-1 rounded-2xl border border-amber-800/40 bg-card/95 px-4 py-3.5 text-left shadow-lg backdrop-blur-sm ${isSidebar ? "rounded-t-lg" : "max-w-md rounded-tl-lg sm:mt-3"} ${bubbleClass}`}
+          className={`callebi-pop relative w-full flex-1 rounded-2xl border border-amber-800/40 bg-card px-4 py-3.5 text-left shadow-lg sm:bg-card/95 sm:backdrop-blur-sm ${isSidebar ? "rounded-t-lg" : "max-w-md rounded-tl-lg sm:mt-3"} ${bubbleClass}`}
         >
           {isSidebar ? (
             <span
-              className="absolute -top-2 left-1/2 h-4 w-4 -translate-x-1/2 rotate-45 border-l border-t border-amber-800/40 bg-card/95"
+              className="absolute -top-2 left-1/2 h-4 w-4 -translate-x-1/2 rotate-45 border-l border-t border-amber-800/40 bg-card sm:bg-card/95"
               aria-hidden
             />
           ) : (
             <span
-              className="absolute -left-2 top-5 hidden h-4 w-4 rotate-45 border-b border-l border-amber-800/40 bg-card/95 sm:block"
+              className="absolute -left-2 top-5 hidden h-4 w-4 rotate-45 border-b border-l border-amber-800/40 bg-card sm:bg-card/95 sm:block"
               aria-hidden
             />
           )}

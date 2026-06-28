@@ -160,10 +160,16 @@ html:not(.dark) {
 }
 
 /* ── Callebi mascote ─────────────────────────────────────────────────── */
+.callebi-stage {
+  isolation: isolate;
+  contain: paint;
+}
+
 .callebi-sticky {
   position: sticky;
   top: 1rem;
   align-self: start;
+  overflow: hidden;
 }
 
 @media (min-width: 1024px) {
@@ -317,4 +323,29 @@ html:not(.dark) {
     opacity: 1;
     transform: scale(1.1);
   }
+}
+
+/* ── Calendário: dias de rodeio ───────────────────────────────────────── */
+.callebi-rodeio-day button {
+  position: relative;
+  background: oklch(0.55 0.12 55 / 22%) !important;
+  color: oklch(0.72 0.1 55) !important;
+  text-decoration: line-through;
+  opacity: 0.85;
+}
+
+.callebi-rodeio-day button::after {
+  content: "🤠";
+  position: absolute;
+  right: -2px;
+  top: -4px;
+  font-size: 0.55rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.callebi-rodeio-day button:hover,
+.callebi-rodeio-day button:focus-visible {
+  opacity: 1;
+  background: oklch(0.58 0.14 55 / 32%) !important;
 }

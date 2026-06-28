@@ -1,71 +1,47 @@
-import { addMonths, eachDayOfInterval, format, getDay, startOfDay } from "date-fns";
+import { format } from "date-fns";
 import { OWNER_NAME } from "./owner";
 
-const FRIDAY_REASONS = [
-  `🍸 ${OWNER_NAME} no happy hour sagrado — nem pensa em marcar`,
-  `🎤 ${OWNER_NAME} tem show na sexta — palco chama primeiro`,
-  `🥃 ${OWNER_NAME} já reservou o banquinho do boteco`,
-  `💼 ${OWNER_NAME} fechando sprint e depois cerveja — dia off`,
-] as const;
+/** Julho em que o Eduardo está no rodeio (ano da agenda). */
+export const RODEIO_YEAR = 2026;
 
-const SATURDAY_REASONS = [
-  `🥴 ${OWNER_NAME} se recuperando da ressaca de ontem`,
-  `🎪 ${OWNER_NAME} no after do show de sexta`,
-  `🛌 ${OWNER_NAME} em modo resgate — só água e remorso`,
-] as const;
+/** Datas bloqueadas (dia do mês em julho) → piada do Callebi. */
+const RODEIO_DAYS: Record<number, string> = {
+  3: `🤠 ${OWNER_NAME} abrindo o rodeio — chapéu na cabeça, agenda no bolso (vazio).`,
+  4: `🐂 Segundo dia de rodeio. O ${OWNER_NAME} jurou que só ia "dar uma olhadinha" na arquibancada.`,
+  8: `🎪 Rodeio de novo! O ${OWNER_NAME} tá entre o bar da feira e a fila do churrasco.`,
+  9: `🍺 ${OWNER_NAME} no rodeio — hoje a reunião perdeu pro copo de cerveja gelada.`,
+  10: `🤠 ${OWNER_NAME} em pleno rodeio. Nem eu consigo puxar ele pro Zap.`,
+  11: `🐴 Último dia de rodeio. O ${OWNER_NAME} volta segunda... se não emendar na festa.`,
+};
 
-const EXTRA_REASONS = [
-  `🍻 ${OWNER_NAME} bebendo por aí com os amigos`,
-  `💻 ${OWNER_NAME} enterrado em deadline até de madrugada`,
-  `🎰 ${OWNER_NAME} perdeu no truco e prometeu saideira`,
-  `🎤 ${OWNER_NAME} tem ensaio / show surpresa`,
-  `✈️ ${OWNER_NAME} viajando a trabalho (ou fingindo que é)`,
-] as const;
-
-function buildBlockedReasons(): Record<string, string> {
-  const start = startOfDay(new Date());
-  const end = addMonths(start, 6);
+function buildRodeioReasons(): Record<string, string> {
   const reasons: Record<string, string> = {};
-  let fridayIndex = 0;
-  let saturdayIndex = 0;
-
-  for (const day of eachDayOfInterval({ start, end })) {
-    const key = format(day, "yyyy-MM-dd");
-    const dow = getDay(day);
-
-    if (dow === 5) {
-      reasons[key] = FRIDAY_REASONS[fridayIndex % FRIDAY_REASONS.length];
-      fridayIndex += 1;
-    } else if (dow === 6) {
-      reasons[key] = SATURDAY_REASONS[saturdayIndex % SATURDAY_REASONS.length];
-      saturdayIndex += 1;
-    }
+  for (const [day, joke] of Object.entries(RODEIO_DAYS)) {
+    const key = format(new Date(RODEIO_YEAR, 6, Number(day)), "yyyy-MM-dd");
+    reasons[key] = joke;
   }
-
-  for (let m = 0; m < 6; m++) {
-    const anchor = addMonths(start, m);
-    const extraDay = 10 + (anchor.getMonth() % 5);
-    const extra = new Date(anchor.getFullYear(), anchor.getMonth(), extraDay);
-    if (extra >= start && extra <= end && getDay(extra) !== 5 && getDay(extra) !== 6) {
-      const key = format(extra, "yyyy-MM-dd");
-      reasons[key] = EXTRA_REASONS[m % EXTRA_REASONS.length];
-    }
-  }
-
   return reasons;
 }
 
-let cache: { day: string; reasons: Record<string, string> } | null = null;
+const RODEIO_REASONS = buildRodeioReasons();
 
-/** Mapa de datas bloqueadas (yyyy-MM-dd) → motivo engraçado. Atualiza 1x por dia. */
+/** Chaves yyyy-MM-dd dos dias de rodeio (3, 4, 8, 9, 10 e 11 de julho). */
+export const RODEIO_DATE_KEYS = Object.keys(RODEIO_REASONS);
+
+export function isRodeioDateKey(key: string): boolean {
+  return key in RODEIO_REASONS;
+}
+
+/** Mapa de datas bloqueadas → motivo engraçado (somente dias de rodeio). */
 export function getBlockedDateReasons(): Record<string, string> {
-  const todayKey = format(new Date(), "yyyy-MM-dd");
-  if (cache?.day === todayKey) return cache.reasons;
-  const reasons = buildBlockedReasons();
-  cache = { day: todayKey, reasons };
-  return reasons;
+  return RODEIO_REASONS;
 }
 
 export function isBlockedDateKey(key: string): boolean {
-  return key in getBlockedDateReasons();
+  return isRodeioDateKey(key);
+}
+
+/** Mês padrão do calendário quando o rodeio ainda não passou. */
+export function getCalendarDefaultMonth(): Date {
+  return new Date(RODEIO_YEAR, 6, 1);
 }

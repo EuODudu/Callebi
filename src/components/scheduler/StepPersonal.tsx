@@ -105,7 +105,7 @@ export function StepPersonal({ data, onChange, onNext }: Props) {
             const r = reactToMotivo(data.motivo);
             if (r) speak(r);
           }}
-          placeholder="Trabalho, café, show, conselho... o Eduardo topa quase tudo"
+          placeholder="Trabalho, café, rodeio, conselho... o Eduardo topa quase tudo"
           rows={4}
         />
       </Field>
