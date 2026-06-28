@@ -56,6 +56,9 @@ function Wizard() {
           <h1 className="mt-2 font-serif text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
             Callebi 🥃
           </h1>
+          <p className="mt-3 text-sm text-muted-foreground">
+            Marca um horário comigo — prometo tentar não chegar bêbado. Tentar.
+          </p>
         </header>
 
         {/* O Callebi como herói da página: avatar vivo + balão de fala. */}

@@ -170,8 +170,35 @@ const idleLines: readonly CallebiLine[] = [
   { text: "Tô aqui esperando, viu. Pode preencher com calma.", mood: "neutral" },
   { text: "Cochilei? Não, não... só descansando os olhos. Continua aí.", mood: "sleepy" },
   { text: "Psiu! Não me deixa falando sozinho.", mood: "wink" },
+  { text: "Tô contando quantas gotas tem no meu copo. Spoiler: poucas.", mood: "drunk" },
 ];
 
 export function idleLine(): CallebiLine {
   return pick(idleLines);
+}
+
+// ── Quando o usuário clica no mascote ────────────────────────────────────
+const pokeLines: readonly CallebiLine[] = [
+  { text: "Ei! Cuidado com o chapéu — herança de família, viu?", mood: "wink" },
+  { text: "Clica de novo e eu cobro entrada na mesa.", mood: "happy" },
+  { text: "Tô trabalhando aqui! ...Mentira, tô só bebericando.", mood: "drunk" },
+  { text: "Curioso, hein? Foca no formulário que eu foco no uísque.", mood: "thinking" },
+  { text: "AAAA! Assustou o Callebi! ...Brincadeira, eu sou casca grossa.", mood: "hype" },
+  { text: "Se continuar clicando vou te colocar na fila do boteco.", mood: "wink" },
+  { text: "Isso aí é carinho ou você tá testando se eu sou real?", mood: "happy" },
+  { text: "Mais um clique e eu conto aquela história do chopp infinito.", mood: "drunk" },
+];
+
+export function pokeLine(): CallebiLine {
+  return pick(pokeLines);
+}
+
+const hoverLines: readonly CallebiLine[] = [
+  { text: "Opa, chegou perto! Não cheira meu copo, por favor.", mood: "wink" },
+  { text: "E aí, parceiro! Tá precisando de coragem pro próximo passo?", mood: "happy" },
+  { text: "Só o hálito de uísque, prometo. Continua aí.", mood: "drunk" },
+];
+
+export function hoverLine(): CallebiLine {
+  return pick(hoverLines);
 }

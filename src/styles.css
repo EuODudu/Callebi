@@ -150,3 +150,151 @@
     color: var(--color-foreground);
   }
 }
+
+/* ── Callebi mascote ─────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .callebi-float {
+    animation: callebi-float 3.5s ease-in-out infinite;
+  }
+
+  .callebi-swirl {
+    animation: callebi-swirl 1.4s ease-in-out infinite;
+    transform-origin: 92px 88px;
+  }
+
+  .callebi-wave-arm {
+    animation: callebi-wave 0.55s ease-in-out 2;
+    transform-origin: 18px 78px;
+  }
+
+  .callebi-pop {
+    animation: callebi-pop 0.32s ease-out;
+  }
+
+  .callebi-caret {
+    animation: callebi-blink 0.8s step-end infinite;
+  }
+
+  .callebi-poke {
+    animation: callebi-poke 0.45s ease-out;
+  }
+
+  .callebi-hype {
+    animation: callebi-hype 0.6s ease-in-out 3;
+  }
+
+  .callebi-bubble-tilt-wink {
+    animation: callebi-tilt 0.35s ease-out forwards;
+  }
+
+  .callebi-bubble-tilt-drunk {
+    animation: callebi-wobble 0.5s ease-in-out infinite;
+  }
+
+  .callebi-sparkle {
+    animation: callebi-sparkle 1.2s ease-in-out infinite;
+  }
+}
+
+@keyframes callebi-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(-1deg);
+  }
+}
+
+@keyframes callebi-swirl {
+  0%,
+  100% {
+    transform: rotate(-8deg);
+  }
+  50% {
+    transform: rotate(8deg);
+  }
+}
+
+@keyframes callebi-wave {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-18deg);
+  }
+  75% {
+    transform: rotate(12deg);
+  }
+}
+
+@keyframes callebi-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes callebi-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes callebi-poke {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(0.92) rotate(-4deg);
+  }
+  60% {
+    transform: scale(1.06) rotate(3deg);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes callebi-hype {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.04);
+  }
+}
+
+@keyframes callebi-tilt {
+  to {
+    transform: rotate(-1.5deg);
+  }
+}
+
+@keyframes callebi-wobble {
+  0%,
+  100% {
+    transform: rotate(-1deg);
+  }
+  50% {
+    transform: rotate(1.5deg);
+  }
+}
+
+@keyframes callebi-sparkle {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
