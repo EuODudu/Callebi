@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { useEffect, useId, useState } from "react";
 import type { CallebiMood, CallebiPose } from "@/lib/scheduler/callebi";
 
 export type MascotProps = {
@@ -9,7 +9,39 @@ export type MascotProps = {
   poking: boolean;
 };
 
-function Eyes({ mood, blinking, iris, white }: { mood: CallebiMood; blinking: boolean; iris: string; white: string }) {
+/** iOS/Safari quebra SVG com feDropShadow + animações CSS no mesmo elemento. */
+function useMascotLite(): boolean {
+  const [lite, setLite] = useState(true);
+
+  useEffect(() => {
+    const narrow = window.matchMedia("(max-width: 639px)");
+    const coarse = window.matchMedia("(hover: none) and (pointer: coarse)");
+    const sync = () => setLite(narrow.matches || coarse.matches);
+    sync();
+    narrow.addEventListener("change", sync);
+    coarse.addEventListener("change", sync);
+    return () => {
+      narrow.removeEventListener("change", sync);
+      coarse.removeEventListener("change", sync);
+    };
+  }, []);
+
+  return lite;
+}
+
+function Eyes({
+  mood,
+  blinking,
+  iris,
+  white,
+  lite,
+}: {
+  mood: CallebiMood;
+  blinking: boolean;
+  iris: string;
+  white: string;
+  lite: boolean;
+}) {
   if (blinking) {
     return (
       <>
@@ -63,8 +95,8 @@ function Eyes({ mood, blinking, iris, white }: { mood: CallebiMood; blinking: bo
         <>
           <path d="M58 82 Q68 66 78 82" fill="none" stroke={iris} strokeWidth="2.8" strokeLinecap="round" />
           <path d="M88 82 Q98 66 108 82" fill="none" stroke={iris} strokeWidth="2.8" strokeLinecap="round" />
-          <circle cx="52" cy="68" r="2" fill="#fbbf24" className="callebi-sparkle" />
-          <circle cx="116" cy="67" r="2.2" fill="#fbbf24" className="callebi-sparkle" style={{ animationDelay: "0.25s" }} />
+          <circle cx="52" cy="68" r="2" fill="#fbbf24" className={lite ? undefined : "callebi-sparkle"} />
+          <circle cx="116" cy="67" r="2.2" fill="#fbbf24" className={lite ? undefined : "callebi-sparkle"} style={{ animationDelay: "0.25s" }} />
         </>
       );
     default:
@@ -191,10 +223,12 @@ function LeftArm({
   pose,
   waving,
   skinId,
+  lite,
 }: {
   pose: CallebiPose;
   waving: boolean;
   skinId: string;
+  lite: boolean;
 }) {
   if (pose === "calendar") {
     return (
@@ -272,10 +306,12 @@ function RightArm({
   pose,
   tipsy,
   skinId,
+  lite,
 }: {
   pose: CallebiPose;
   tipsy: boolean;
   skinId: string;
+  lite: boolean;
 }) {
   if (pose === "cheers") {
     return (
@@ -311,22 +347,29 @@ function RightArm({
 
 export function CallebiMascot({ mood, pose, blinking, waving, poking }: MascotProps) {
   const rawId = useId().replace(/:/g, "");
+  const lite = useMascotLite();
   const tipsy = mood === "drunk";
   const hype = mood === "hype";
   const blush = tipsy || hype || mood === "happy" || mood === "wink";
 
-  const motionClass = ["callebi-float", poking && "callebi-poke", hype && "callebi-hype"]
-    .filter(Boolean)
-    .join(" ");
+  const motionClass = lite
+    ? ""
+    : ["callebi-float", poking && "callebi-poke", hype && "callebi-hype"].filter(Boolean).join(" ");
 
   return (
     <svg
       viewBox="0 0 160 180"
-      className={`h-[148px] w-[148px] shrink-0 sm:h-[168px] sm:w-[168px] ${motionClass}`}
+      className={`callebi-mascot-svg h-[148px] w-[148px] shrink-0 sm:h-[168px] sm:w-[168px] ${motionClass}`}
       role="img"
       aria-hidden
+      xmlns="http://www.w3.org/2000/svg"
     >
       <defs>
+        {!lite && (
+          <filter id={`${rawId}-shadow`} x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="4" stdDeviation="5" floodColor="#78350f" floodOpacity="0.18" />
+          </filter>
+        )}
         <radialGradient id={`${rawId}-halo`} cx="50%" cy="45%" r="55%">
           <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.28" />
           <stop offset="70%" stopColor="#d97706" stopOpacity="0.08" />
@@ -361,15 +404,15 @@ export function CallebiMascot({ mood, pose, blinking, waving, poking }: MascotPr
           <stop offset="0%" stopColor="#ffffff" stopOpacity="0.95" />
           <stop offset="100%" stopColor="#e2e8f0" stopOpacity="0.85" />
         </linearGradient>
-        <filter id={`${rawId}-shadow`} x="-20%" y="-20%" width="140%" height="140%">
-          <feDropShadow dx="0" dy="4" stdDeviation="5" floodColor="#78350f" floodOpacity="0.18" />
-        </filter>
       </defs>
 
       {/* holofote quente atrás do personagem */}
       <ellipse cx="80" cy="92" rx="72" ry="68" fill={`url(#${rawId}-halo)`} />
 
-      <g filter={`url(#${rawId}-shadow)`} style={{ transform: tipsy ? "rotate(-5deg)" : undefined, transformOrigin: "80px 95px" }}>
+      <g
+        {...(!lite ? { filter: `url(#${rawId}-shadow)` } : {})}
+        transform={tipsy && !lite ? "rotate(-5 80 95)" : undefined}
+      >
         {/* sombra no chão */}
         <ellipse cx="80" cy="168" rx="34" ry="5" fill="#78350f" opacity="0.12" />
 
@@ -406,9 +449,9 @@ export function CallebiMascot({ mood, pose, blinking, waving, poking }: MascotPr
         <path d="M74 126 L80 132 L86 126 L80 138 Z" fill="#b45309" stroke="#92400e" strokeWidth="1" strokeLinejoin="round" />
         <circle cx="80" cy="132" r="2.5" fill="#f59e0b" />
 
-        <LeftArm pose={pose} waving={waving} skinId={rawId} />
+        <LeftArm pose={pose} waving={waving && !lite} skinId={rawId} lite={lite} />
 
-        <RightArm pose={pose} tipsy={tipsy} skinId={rawId} />
+        <RightArm pose={pose} tipsy={tipsy && !lite} skinId={rawId} lite={lite} />
 
         {/* pescoço */}
         <rect x="72" y="108" width="16" height="12" rx="5" fill={`url(#${rawId}-skin)`} />
@@ -465,7 +508,7 @@ export function CallebiMascot({ mood, pose, blinking, waving, poking }: MascotPr
         )}
 
         <Eyebrows mood={mood} />
-        <Eyes mood={mood} blinking={blinking} iris="#3f2518" white="#fffdf8" />
+        <Eyes mood={mood} blinking={blinking} iris="#3f2518" white="#fffdf8" lite={lite} />
         <Mouth mood={mood} />
 
         {/* sardas leves — charme */}

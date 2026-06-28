@@ -69,11 +69,15 @@ export function StepReview({ booking, onBack }: Props) {
         <Row label="Observações" value={booking.details.observacoes || "—"} multiline />
       </Section>
 
-      <div className="flex items-center justify-between pt-2">
-        <Button variant="ghost" onClick={onBack}>
+      <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center sm:justify-between">
+        <Button variant="ghost" onClick={onBack} className="order-2 w-full sm:order-1 sm:w-auto">
           ← Voltar
         </Button>
-        <Button onClick={() => setConfirmOpen(true)} size="lg">
+        <Button
+          onClick={() => setConfirmOpen(true)}
+          size="lg"
+          className="order-1 h-auto min-h-10 w-full whitespace-normal px-4 py-2.5 text-center text-sm leading-snug sm:order-2 sm:h-10 sm:w-auto sm:whitespace-nowrap sm:px-8"
+        >
           Mandar pro Zap do {OWNER_NAME} 🚀
         </Button>
       </div>

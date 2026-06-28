@@ -162,14 +162,25 @@ html:not(.dark) {
 /* ── Callebi mascote ─────────────────────────────────────────────────── */
 .callebi-stage {
   isolation: isolate;
-  contain: paint;
+}
+
+@media (min-width: 640px) {
+  .callebi-stage {
+    contain: paint;
+  }
+}
+
+.callebi-mascot-svg {
+  display: block;
+  overflow: visible;
+  max-width: 100%;
 }
 
 .callebi-sticky {
   position: sticky;
   top: 1rem;
   align-self: start;
-  overflow: hidden;
+  overflow: visible;
 }
 
 @media (min-width: 1024px) {

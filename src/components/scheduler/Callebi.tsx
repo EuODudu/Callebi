@@ -144,10 +144,11 @@ export function CallebiStage({ step, layout = "inline" }: { step: number; layout
   };
 
   const typing = shown.length < line.text.length;
+  const liteMotion = !hasFinePointer();
   const bubbleClass =
-    line.mood === "wink"
+    !liteMotion && line.mood === "wink"
       ? "callebi-bubble-tilt-wink"
-      : line.mood === "drunk"
+      : !liteMotion && line.mood === "drunk"
         ? "callebi-bubble-tilt-drunk"
         : "";
 
@@ -186,7 +187,7 @@ export function CallebiStage({ step, layout = "inline" }: { step: number; layout
           type="button"
           onClick={handlePoke}
           onMouseEnter={handleHover}
-          className="group relative shrink-0 rounded-3xl bg-amber-950/40 p-2 outline-none ring-amber-500/0 transition-all hover:scale-[1.02] hover:bg-amber-900/50 hover:ring-4 hover:ring-amber-600/25 focus-visible:ring-4 focus-visible:ring-amber-500/40 active:scale-[0.98]"
+          className="group relative shrink-0 overflow-visible rounded-3xl bg-amber-950/40 p-2 outline-none ring-amber-500/0 transition-colors hover:bg-amber-900/50 focus-visible:ring-4 focus-visible:ring-amber-500/40 sm:transition-all sm:hover:scale-[1.02] sm:hover:ring-4 sm:hover:ring-amber-600/25 sm:active:scale-[0.98]"
           aria-label="Callebi — clique para conversar"
           title="Clica aí, prometo que sou simpático"
         >
@@ -204,7 +205,7 @@ export function CallebiStage({ step, layout = "inline" }: { step: number; layout
 
         <div
           key={line.id}
-          className={`callebi-pop relative w-full flex-1 rounded-2xl border border-amber-800/40 bg-card px-4 py-3.5 text-left shadow-lg sm:bg-card/95 sm:backdrop-blur-sm ${isSidebar ? "rounded-t-lg" : "max-w-md rounded-tl-lg sm:mt-3"} ${bubbleClass}`}
+          className={`relative w-full flex-1 rounded-2xl border border-amber-800/40 bg-card px-4 py-3.5 text-left shadow-lg sm:bg-card/95 sm:backdrop-blur-sm ${!liteMotion ? "callebi-pop" : ""} ${isSidebar ? "rounded-t-lg" : "max-w-md rounded-tl-lg sm:mt-3"} ${bubbleClass}`}
         >
           {isSidebar ? (
             <span
