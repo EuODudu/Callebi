@@ -19,6 +19,7 @@ import {
 } from "@/lib/scheduler/types";
 import { useCallebi } from "@/components/scheduler/Callebi";
 import { reactToNome, reactToProximidade, reactToMotivo, reactToValidationErrors } from "@/lib/scheduler/callebi";
+import { OWNER_NAME } from "@/lib/scheduler/owner";
 
 type Props = {
   data: BookingState["personal"];
@@ -49,7 +50,7 @@ export function StepPersonal({ data, onChange, onNext }: Props) {
 
   return (
     <div className="space-y-5">
-      <Field label="Como o Callebi deve te chamar?" error={errors.nome}>
+      <Field label="Como devo te chamar?" error={errors.nome}>
         <Input
           value={data.nome}
           onChange={(e) => set("nome", e.target.value)}
@@ -60,7 +61,7 @@ export function StepPersonal({ data, onChange, onNext }: Props) {
           placeholder="Nome completo, sem apelido vergonhoso"
         />
       </Field>
-      <Field label="WhatsApp (pra eu te achar depois)" error={errors.whatsapp}>
+      <Field label={`WhatsApp (pro ${OWNER_NAME} te responder)`} error={errors.whatsapp}>
         <Input
           value={data.whatsapp}
           onChange={(e) => set("whatsapp", formatWhatsapp(e.target.value))}
@@ -96,7 +97,7 @@ export function StepPersonal({ data, onChange, onNext }: Props) {
           </SelectContent>
         </Select>
       </Field>
-      <Field label="E aí, pra que me quer?" error={errors.motivo}>
+      <Field label={`Pra que você quer falar com o ${OWNER_NAME}?`} error={errors.motivo}>
         <Textarea
           value={data.motivo}
           onChange={(e) => set("motivo", e.target.value)}
@@ -104,7 +105,7 @@ export function StepPersonal({ data, onChange, onNext }: Props) {
             const r = reactToMotivo(data.motivo);
             if (r) speak(r);
           }}
-          placeholder="Pode ser trabalho, café, conselho, terapia gratuita..."
+          placeholder="Trabalho, café, show, conselho... o Eduardo topa quase tudo"
           rows={4}
         />
       </Field>

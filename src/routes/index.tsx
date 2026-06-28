@@ -8,6 +8,7 @@ import { StepReview } from "@/components/scheduler/StepReview";
 import { CallebiProvider, CallebiStage, useCallebi } from "@/components/scheduler/Callebi";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { greetingFor } from "@/lib/scheduler/callebi";
+import { OWNER_NAME } from "@/lib/scheduler/owner";
 import {
   clearBookingDraft,
   loadBookingDraft,
@@ -19,16 +20,15 @@ import { initialBooking, type BookingState } from "@/lib/scheduler/types";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Agendamento — Callebi" },
+      { title: `Agendamento — ${OWNER_NAME}` },
       {
         name: "description",
-        content:
-          "Agende um compromisso com o Callebi — desde que ele não esteja enchendo a cara, claro.",
+        content: `Marque um horário com o ${OWNER_NAME}. O Callebi organiza a agenda — quando ele não está trabalhando, bebendo ou no show.`,
       },
-      { property: "og:title", content: "Agendamento — Callebi" },
+      { property: "og:title", content: `Agendamento — ${OWNER_NAME}` },
       {
         property: "og:description",
-        content: "Marque com o Callebi sem atrapalhar a happy hour dele.",
+        content: `Fale com o ${OWNER_NAME} via Callebi, assistente virtual de humor duvidoso.`,
       },
     ],
   }),
@@ -83,13 +83,17 @@ function Wizard() {
             <ThemeToggle />
           </div>
           <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
-            Agenda oficial do
+            Agenda do {OWNER_NAME}
           </p>
           <h1 className="mt-2 font-serif text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
-            Callebi 🥃
+            {OWNER_NAME} 🥃
           </h1>
+          <p className="mt-1 text-sm font-medium text-amber-200/90">
+            via Callebi, assistente virtual
+          </p>
           <p className="mt-3 text-sm text-muted-foreground">
-            Marca um horário comigo — ambiente de boteco, modo escuro, zero julgamento.
+            Marca um horário — o {OWNER_NAME} tá sempre ocupado trabalhando, bebendo por aí ou no
+            show. Eu organizo por aqui.
           </p>
         </header>
 
@@ -132,8 +136,8 @@ function Wizard() {
 
             <div className="mt-6 flex flex-col items-center gap-2 lg:items-start">
               <p className="text-center text-xs text-muted-foreground lg:text-left">
-                Ao enviar, cai direto no meu Zap. Se eu demorar pra responder, é porque tô honrando
-                algum compromisso etílico. 🍻
+                Ao enviar, cai no Zap do {OWNER_NAME}. Se demorar, ele tá em deadline, no bar ou no
+                palco. 🍻
               </p>
               {hasDraftContent(booking) && (
                 <button

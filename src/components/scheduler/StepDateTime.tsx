@@ -12,6 +12,7 @@ import {
   reactToHorario,
   reactToValidationErrors,
 } from "@/lib/scheduler/callebi";
+import { OWNER_NAME } from "@/lib/scheduler/owner";
 
 type Props = {
   data: BookingState["dateTime"];
@@ -20,9 +21,8 @@ type Props = {
   onNext: () => void;
 };
 
-// Só datas passadas ficam realmente desabilitadas. As datas "etílicas" do
-// Callebi continuam clicáveis de propósito — assim o toque revela a piada
-// (em vez de depender de hover, que não existe em celular).
+// Só datas passadas ficam realmente desabilitadas. As datas ocupadas do
+// Eduardo continuam clicáveis de propósito — o toque revela a piada
 function isPast(d: Date) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -71,9 +71,9 @@ export function StepDateTime({ data, onChange, onBack, onNext }: Props) {
   return (
     <div className="space-y-6">
       <div>
-        <p className="mb-1 text-sm font-medium">Quando você quer me ver?</p>
+        <p className="mb-1 text-sm font-medium">Quando você quer ver o {OWNER_NAME}?</p>
         <p className="mb-3 text-xs text-muted-foreground">
-          Toque (ou passe o mouse) nas datas riscadas pra descobrir onde o Callebi vai estar 🍻
+          Toque (ou passe o mouse) nas datas riscadas pra descobrir onde ele vai estar 🍻
         </p>
         <div
           className="flex justify-center rounded-lg border bg-card p-2"
@@ -104,8 +104,8 @@ export function StepDateTime({ data, onChange, onBack, onNext }: Props) {
             <span className="italic text-primary">{activeMsg}</span>
           ) : (
             <span className="text-muted-foreground">
-              Datas riscadas? Callebi tá ocupado com compromissos... etílicos. Toca pra ver o
-              motivo.
+              Datas riscadas? O {OWNER_NAME} tá ocupado — trabalhando, bebendo ou no show. Toca pra
+              ver o motivo.
             </span>
           )}
         </div>
@@ -115,8 +115,8 @@ export function StepDateTime({ data, onChange, onBack, onNext }: Props) {
       <div>
         <p className="mb-1 text-sm font-medium">A que horas?</p>
         <p className="mb-3 text-xs text-muted-foreground">
-          Antes das 8h o Callebi ainda tá sonhando, depois das 20h ele já tá no bar. Escolha
-          sabiamente.
+          Antes das 8h o {OWNER_NAME} ainda tá no travesseiro, depois das 20h pode já estar no bar
+          ou no after. Escolha sabiamente.
         </p>
         <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
           {horarios.map((h) => {

@@ -17,6 +17,7 @@ import { buildWhatsappUrl } from "@/lib/scheduler/whatsapp";
 import { clearBookingDraft } from "@/lib/scheduler/draft";
 import { useCallebi } from "@/components/scheduler/Callebi";
 import { reactToReview, reactToSent } from "@/lib/scheduler/callebi";
+import { OWNER_NAME } from "@/lib/scheduler/owner";
 
 type Props = {
   booking: BookingState;
@@ -73,7 +74,7 @@ export function StepReview({ booking, onBack }: Props) {
           ← Voltar
         </Button>
         <Button onClick={() => setConfirmOpen(true)} size="lg">
-          Mandar pro Zap do Callebi 🚀
+          Mandar pro Zap do {OWNER_NAME} 🚀
         </Button>
       </div>
 
@@ -82,8 +83,8 @@ export function StepReview({ booking, onBack }: Props) {
           <AlertDialogHeader>
             <AlertDialogTitle>Confirma o envio?</AlertDialogTitle>
             <AlertDialogDescription>
-              Vou abrir o WhatsApp com tudo preenchido. Se tiver errado, a culpa é sua — eu só
-              conferi de leve. 😏
+              Vou abrir o WhatsApp com tudo preenchido pro {OWNER_NAME}. Se tiver errado, corrige
+              antes — ele é ocupado demais pra adivinhar. 😏
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

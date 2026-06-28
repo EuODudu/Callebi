@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import type { BookingState } from "./types";
+import { OWNER_NAME } from "./owner";
 
 const DEFAULT_PHONE = "5511930407700";
 
@@ -13,6 +14,7 @@ export function buildWhatsappUrl(b: BookingState): string {
   const dataStr = b.dateTime.data ? format(b.dateTime.data, "dd/MM/yyyy") : "";
   const lines = [
     "📅 NOVA SOLICITAÇÃO DE COMPROMISSO",
+    `(via Callebi — assistente do ${OWNER_NAME})`,
     "",
     `👤 Nome: ${b.personal.nome}`,
     `📱 WhatsApp: ${b.personal.whatsapp}`,
@@ -37,7 +39,7 @@ export function buildWhatsappUrl(b: BookingState): string {
     "📝 Observações:",
     b.details.observacoes || "—",
     "",
-    "Aguardando sua confirmação.",
+    `Aguardando confirmação do ${OWNER_NAME}.`,
   ];
   return `https://wa.me/${callebiPhone()}?text=${encodeURIComponent(lines.join("\n"))}`;
 }

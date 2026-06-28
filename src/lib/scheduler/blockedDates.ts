@@ -1,22 +1,25 @@
 import { addMonths, eachDayOfInterval, format, getDay, startOfDay } from "date-fns";
+import { OWNER_NAME } from "./owner";
 
 const FRIDAY_REASONS = [
-  "🍸 Sexta santa: Callebi vai beber até esquecer o nome",
-  "🍺 Happy hour sagrado — nem pensa em marcar",
-  "🥃 Callebi já reservou o banquinho do boteco",
-  "🍷 Sexta é dia de degustação intensiva (de cachaça)",
+  `🍸 ${OWNER_NAME} no happy hour sagrado — nem pensa em marcar`,
+  `🎤 ${OWNER_NAME} tem show na sexta — palco chama primeiro`,
+  `🥃 ${OWNER_NAME} já reservou o banquinho do boteco`,
+  `💼 ${OWNER_NAME} fechando sprint e depois cerveja — dia off`,
 ] as const;
 
 const SATURDAY_REASONS = [
-  "🥴 Callebi se recuperando da ressaca de ontem",
-  "😵 Callebi tentando lembrar o que aconteceu na sexta",
-  "🛌 Sábado de resgate — só água e remorso",
+  `🥴 ${OWNER_NAME} se recuperando da ressaca de ontem`,
+  `🎪 ${OWNER_NAME} no after do show de sexta`,
+  `🛌 ${OWNER_NAME} em modo resgate — só água e remorso`,
 ] as const;
 
 const EXTRA_REASONS = [
-  "🍻 Callebi marcou de encher a cara com os amigos",
-  "🎰 Callebi perdeu no truco e prometeu saideira",
-  "🎤 Callebi tem karaokê etílico agendado",
+  `🍻 ${OWNER_NAME} bebendo por aí com os amigos`,
+  `💻 ${OWNER_NAME} enterrado em deadline até de madrugada`,
+  `🎰 ${OWNER_NAME} perdeu no truco e prometeu saideira`,
+  `🎤 ${OWNER_NAME} tem ensaio / show surpresa`,
+  `✈️ ${OWNER_NAME} viajando a trabalho (ou fingindo que é)`,
 ] as const;
 
 function buildBlockedReasons(): Record<string, string> {
@@ -39,7 +42,6 @@ function buildBlockedReasons(): Record<string, string> {
     }
   }
 
-  // Alguns dias aleatórios extras (determinísticos por mês) para surpresa.
   for (let m = 0; m < 6; m++) {
     const anchor = addMonths(start, m);
     const extraDay = 10 + (anchor.getMonth() % 5);

@@ -10,6 +10,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import { OWNER_NAME } from "../lib/scheduler/owner";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -19,7 +20,7 @@ function NotFoundComponent() {
         <h1 className="text-7xl font-bold text-foreground">404</h1>
         <h2 className="mt-4 text-xl font-semibold text-foreground">Página não encontrada</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          Essa rota não existe — ou o Callebi esqueceu onde guardou o link.
+          Essa rota não existe — ou o Callebi perdeu o link na bagunça do {OWNER_NAME}.
         </p>
         <div className="mt-6">
           <Link
@@ -48,7 +49,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
           Ops, a página não carregou
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Algo deu errado por aqui. Tenta de novo ou volta pro agendamento do Callebi.
+          Algo deu errado por aqui. Tenta de novo ou volta pra agenda do {OWNER_NAME}.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
@@ -77,25 +78,24 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Callebi — Agende seu compromisso" },
+      { title: `${OWNER_NAME} — Agende seu compromisso` },
       {
         name: "description",
-        content:
-          "Marque um horário com o Callebi. Agenda oficial, humor garantido e zero garantia de sobriedade.",
+        content: `Marque um horário com o ${OWNER_NAME}. Callebi, assistente virtual, filtra a agenda enquanto ele trabalha, bebe ou está no show.`,
       },
-      { name: "author", content: "Callebi" },
-      { property: "og:title", content: "Callebi — Agende seu compromisso" },
+      { name: "author", content: OWNER_NAME },
+      { property: "og:title", content: `${OWNER_NAME} — Agende seu compromisso` },
       {
         property: "og:description",
-        content: "Agende com o Callebi antes que ele vá pro happy hour.",
+        content: `Agende com o ${OWNER_NAME} antes que ele suma pro happy hour ou pro palco.`,
       },
       { property: "og:type", content: "website" },
       { property: "og:locale", content: "pt_BR" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "Callebi — Agende seu compromisso" },
+      { name: "twitter:title", content: `${OWNER_NAME} — Agende seu compromisso` },
       {
         name: "twitter:description",
-        content: "Marque um horário com o bartender mais simpático (e etílico) da internet.",
+        content: `Marque com o ${OWNER_NAME}. O Callebi cuida da fila enquanto ele vive a vida.`,
       },
     ],
     links: [

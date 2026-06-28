@@ -9,6 +9,7 @@ import {
 } from "react";
 import type { CallebiLine, CallebiMood } from "@/lib/scheduler/callebi";
 import { hoverLine, idleLine, pokeLine, poseForStep } from "@/lib/scheduler/callebi";
+import { OWNER_NAME } from "@/lib/scheduler/owner";
 import { CallebiMascot } from "@/components/scheduler/CallebiMascot";
 
 type SpokenLine = CallebiLine & { id: number };
@@ -30,8 +31,8 @@ export function useCallebi(): CallebiApi {
 
 const FIRST_LINE: SpokenLine = {
   id: 0,
-  text: "Bem-vindo ao boteco virtual — modo escuro porque luz forte me lembra ressaca. Bora agendar?",
-  mood: "drunk",
+  text: `Oi! Sou o Callebi, assistente virtual do ${OWNER_NAME}. Ele tá sempre ocupado — trabalhando, bebendo ou no show. Bora agendar?`,
+  mood: "happy",
 };
 
 export function CallebiProvider({ children }: { children: ReactNode }) {
@@ -169,7 +170,7 @@ export function CallebiStage({ step, layout = "inline" }: { step: number; layout
       />
 
       <p className="relative mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-200/80">
-        Bartender oficial · clique no Callebi
+        Assistente do {OWNER_NAME} · clique no Callebi
       </p>
 
       <div
