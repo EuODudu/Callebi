@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { detailsSchema, collectZodErrors, type BookingState } from "@/lib/scheduler/types";
 import { useCallebi } from "@/components/scheduler/Callebi";
-import { reactToLocal, reactToParticipantes } from "@/lib/scheduler/callebi";
+import { reactToLocal, reactToParticipantes, reactToValidationErrors } from "@/lib/scheduler/callebi";
 
 type Props = {
   data: BookingState["details"];
@@ -26,7 +26,9 @@ export function StepDetails({ data, onChange, onBack, onNext }: Props) {
   const submit = () => {
     const result = detailsSchema.safeParse(data);
     if (!result.success) {
-      setErrors(collectZodErrors(result.error));
+      const nextErrors = collectZodErrors(result.error);
+      setErrors(nextErrors);
+      speak(reactToValidationErrors(nextErrors));
       return;
     }
     setErrors({});

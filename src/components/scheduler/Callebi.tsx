@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from "react";
 import type { CallebiLine, CallebiMood } from "@/lib/scheduler/callebi";
-import { hoverLine, idleLine, pokeLine } from "@/lib/scheduler/callebi";
+import { hoverLine, idleLine, pokeLine, poseForStep } from "@/lib/scheduler/callebi";
 import { CallebiMascot } from "@/components/scheduler/CallebiMascot";
 
 type SpokenLine = CallebiLine & { id: number };
@@ -72,8 +72,14 @@ function prefersReducedMotion(): boolean {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
-export function CallebiStage() {
+function hasFinePointer(): boolean {
+  if (typeof window === "undefined" || !window.matchMedia) return false;
+  return window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+}
+
+export function CallebiStage({ step }: { step: number }) {
   const { line, speak } = useCallebi();
+  const pose = poseForStep(step);
   const [shown, setShown] = useState(line.text);
   const [blinking, setBlinking] = useState(false);
   const [waving, setWaving] = useState(false);
@@ -126,6 +132,7 @@ export function CallebiStage() {
   };
 
   const handleHover = () => {
+    if (!hasFinePointer()) return;
     setWaving(true);
     window.setTimeout(() => setWaving(false), 1100);
     if (!hoverSpoke.current) {
@@ -166,7 +173,13 @@ export function CallebiStage() {
           aria-label="Callebi — clique para conversar"
           title="Clica aí, prometo que sou simpático"
         >
-          <CallebiMascot mood={line.mood} blinking={blinking} waving={waving} poking={poking} />
+          <CallebiMascot
+            mood={line.mood}
+            pose={pose}
+            blinking={blinking}
+            waving={waving}
+            poking={poking}
+          />
           <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-amber-700 px-2.5 py-0.5 text-[10px] font-bold text-amber-50 opacity-0 shadow-md transition-opacity group-hover:opacity-100">
             Clica! 🥃
           </span>

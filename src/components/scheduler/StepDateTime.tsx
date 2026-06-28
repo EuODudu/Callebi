@@ -1,18 +1,17 @@
+import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { ptBR } from "date-fns/locale";
 import { format } from "date-fns";
-import {
-  BLOCKED_DATES,
-  BLOCKED_REASONS,
-  horarios,
-  dateTimeSchema,
-  collectZodErrors,
-  type BookingState,
-} from "@/lib/scheduler/types";
-import { useState } from "react";
+import { horarios, dateTimeSchema, collectZodErrors, type BookingState } from "@/lib/scheduler/types";
+import { getBlockedDateReasons } from "@/lib/scheduler/blockedDates";
 import { useCallebi } from "@/components/scheduler/Callebi";
-import { reactToBlockedDate, reactToData, reactToHorario } from "@/lib/scheduler/callebi";
+import {
+  reactToBlockedDate,
+  reactToData,
+  reactToHorario,
+  reactToValidationErrors,
+} from "@/lib/scheduler/callebi";
 
 type Props = {
   data: BookingState["dateTime"];
@@ -20,8 +19,6 @@ type Props = {
   onBack: () => void;
   onNext: () => void;
 };
-
-const blockedSet = new Set(BLOCKED_DATES);
 
 // Só datas passadas ficam realmente desabilitadas. As datas "etílicas" do
 // Callebi continuam clicáveis de propósito — assim o toque revela a piada
@@ -34,6 +31,8 @@ function isPast(d: Date) {
 
 export function StepDateTime({ data, onChange, onBack, onNext }: Props) {
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const blockedReasons = useMemo(() => getBlockedDateReasons(), []);
+  const blockedKeys = useMemo(() => new Set(Object.keys(blockedReasons)), [blockedReasons]);
   // Mensagem revelada ao TOCAR numa data bloqueada (funciona no celular).
   const [revealed, setRevealed] = useState<string | null>(null);
   // Pré-visualização no hover (bônus pra quem usa mouse).
@@ -43,7 +42,9 @@ export function StepDateTime({ data, onChange, onBack, onNext }: Props) {
   const submit = () => {
     const result = dateTimeSchema.safeParse(data);
     if (!result.success) {
-      setErrors(collectZodErrors(result.error));
+      const nextErrors = collectZodErrors(result.error);
+      setErrors(nextErrors);
+      speak(reactToValidationErrors(nextErrors));
       return;
     }
     setErrors({});
@@ -53,11 +54,11 @@ export function StepDateTime({ data, onChange, onBack, onNext }: Props) {
   const handleSelect = (d: Date | undefined) => {
     if (!d) return; // ignora "desmarcar" tocando de novo
     const key = format(d, "yyyy-MM-dd");
-    if (blockedSet.has(key)) {
-      const reason = BLOCKED_REASONS[key];
-      setRevealed(reason); // revela ao toque
+    if (blockedKeys.has(key)) {
+      const reason = blockedReasons[key];
+      setRevealed(reason);
       speak(reactToBlockedDate(reason));
-      return; // não seleciona um dia bloqueado
+      return;
     }
     setRevealed(null);
     onChange({ ...data, data: d });
@@ -84,17 +85,17 @@ export function StepDateTime({ data, onChange, onBack, onNext }: Props) {
             selected={data.data}
             onSelect={handleSelect}
             disabled={isPast}
-            defaultMonth={data.data ?? new Date(2026, 6, 1)}
+            defaultMonth={data.data ?? new Date()}
             className="pointer-events-auto"
             modifiers={{
-              drinking: (d) => blockedSet.has(format(d, "yyyy-MM-dd")),
+              drinking: (d) => blockedKeys.has(format(d, "yyyy-MM-dd")),
             }}
             modifiersClassNames={{
               drinking: "line-through opacity-60 hover:opacity-100 cursor-pointer",
             }}
             onDayMouseEnter={(d) => {
               const key = format(d, "yyyy-MM-dd");
-              setHoverMsg(BLOCKED_REASONS[key] ?? null);
+              setHoverMsg(blockedReasons[key] ?? null);
             }}
           />
         </div>

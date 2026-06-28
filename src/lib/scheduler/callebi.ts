@@ -202,3 +202,36 @@ const hoverLines: readonly CallebiLine[] = [
 export function hoverLine(): CallebiLine {
   return pick(hoverLines);
 }
+
+// ── Reações a erros de validação ─────────────────────────────────────────
+export function reactToValidationErrors(errors: Record<string, string>): CallebiLine {
+  const field = Object.keys(errors)[0];
+  const byField: Record<string, CallebiLine> = {
+    nome: { text: "Sem nome eu não te chamo de nada... preenche aí!", mood: "wink" },
+    whatsapp: { text: "Esse Zap tá torto. Formato: (11) 99999-9999", mood: "thinking" },
+    cidade: { text: "Preciso saber de onde você fala — GPS não lê mente.", mood: "thinking" },
+    proximidade: { text: "Qual é a nossa? Família, amigo, cliente...?", mood: "wink" },
+    motivo: { text: "Conta rapidinho o motivo — curiosidade minha (e profissional).", mood: "happy" },
+    data: { text: "Ô, escolhe uma data livre! As riscadas eu tô ocupado etílico.", mood: "drunk" },
+    horario: { text: "Falta o horário! Não vou adivinhar que horas você quer.", mood: "sleepy" },
+    local: { text: "Sem local eu paro no primeiro bar que aparecer.", mood: "drunk" },
+    duracao: { text: "Quanto tempo vai durar? 5 min ou até o bar fechar?", mood: "thinking" },
+    participantes: { text: "Quantas pessoas? Sozinho comigo eu desconfio 👀", mood: "wink" },
+  };
+  return (
+    (field && byField[field]) ?? {
+      text: "Tem campos pendentes. Revisa com carinho!",
+      mood: "happy",
+    }
+  );
+}
+
+// ── Pose do mascote por passo do wizard ─────────────────────────────────
+export type CallebiPose = "wave" | "calendar" | "notes" | "cheers";
+
+export function poseForStep(step: number): CallebiPose {
+  if (step === 2) return "calendar";
+  if (step === 3) return "notes";
+  if (step === 4) return "cheers";
+  return "wave";
+}

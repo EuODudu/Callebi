@@ -1,9 +1,20 @@
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { BookingState } from "@/lib/scheduler/types";
 import { buildWhatsappUrl } from "@/lib/scheduler/whatsapp";
+import { clearBookingDraft } from "@/lib/scheduler/draft";
 import { useCallebi } from "@/components/scheduler/Callebi";
 import { reactToReview, reactToSent } from "@/lib/scheduler/callebi";
 
@@ -14,6 +25,7 @@ type Props = {
 
 export function StepReview({ booking, onBack }: Props) {
   const { speak } = useCallebi();
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   useEffect(() => {
     speak(reactToReview());
@@ -21,8 +33,10 @@ export function StepReview({ booking, onBack }: Props) {
 
   const send = () => {
     speak(reactToSent());
+    clearBookingDraft();
     const url = buildWhatsappUrl(booking);
     window.open(url, "_blank");
+    setConfirmOpen(false);
   };
 
   const dataStr = booking.dateTime.data
@@ -58,10 +72,26 @@ export function StepReview({ booking, onBack }: Props) {
         <Button variant="ghost" onClick={onBack}>
           ← Voltar
         </Button>
-        <Button onClick={send} size="lg">
+        <Button onClick={() => setConfirmOpen(true)} size="lg">
           Mandar pro Zap do Callebi 🚀
         </Button>
       </div>
+
+      <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirma o envio?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Vou abrir o WhatsApp com tudo preenchido. Se tiver errado, a culpa é sua — eu só
+              conferi de leve. 😏
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Deixa eu revisar</AlertDialogCancel>
+            <AlertDialogAction onClick={send}>Manda ver 🥃</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

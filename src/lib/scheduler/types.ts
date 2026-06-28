@@ -33,24 +33,6 @@ export const horarios = [
   "20:00",
 ] as const;
 
-export const BLOCKED_DATES = [
-  "2026-07-03",
-  "2026-07-04",
-  "2026-07-08",
-  "2026-07-09",
-  "2026-07-10",
-  "2026-07-11",
-];
-
-export const BLOCKED_REASONS: Record<string, string> = {
-  "2026-07-03": "🍻 Callebi vai estar enchendo a cara",
-  "2026-07-04": "🥴 Callebi se recuperando da ressaca de ontem",
-  "2026-07-08": "🍺 Callebi marcou de encher a cara com os amigos",
-  "2026-07-09": "🍷 Callebi em sessão intensiva de degustação",
-  "2026-07-10": "🍸 Sexta santa: Callebi vai beber até esquecer o nome",
-  "2026-07-11": "😵 Callebi tentando lembrar o que aconteceu na sexta",
-};
-
 export const personalSchema = z.object({
   nome: z.string().trim().min(2, "Informe seu nome completo").max(100),
   whatsapp: z

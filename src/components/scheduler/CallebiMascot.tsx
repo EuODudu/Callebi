@@ -1,8 +1,9 @@
 import { useId } from "react";
-import type { CallebiMood } from "@/lib/scheduler/callebi";
+import type { CallebiMood, CallebiPose } from "@/lib/scheduler/callebi";
 
 export type MascotProps = {
   mood: CallebiMood;
+  pose: CallebiPose;
   blinking: boolean;
   waving: boolean;
   poking: boolean;
@@ -186,7 +187,129 @@ function WhiskeyGlass({ id }: { id: string }) {
   );
 }
 
-export function CallebiMascot({ mood, blinking, waving, poking }: MascotProps) {
+function LeftArm({
+  pose,
+  waving,
+  skinId,
+}: {
+  pose: CallebiPose;
+  waving: boolean;
+  skinId: string;
+}) {
+  if (pose === "calendar") {
+    return (
+      <g>
+        <path
+          d="M42 122 Q28 120 22 132 Q26 140 36 134 Q40 128 44 126"
+          fill={`url(#${skinId}-skin)`}
+          stroke="#b8734a"
+          strokeWidth="1.2"
+          strokeLinejoin="round"
+        />
+        <rect x="8" y="118" width="20" height="22" rx="2" fill="#fffbeb" stroke="#d97706" strokeWidth="1.2" />
+        {[0, 1, 2].map((row) =>
+          [0, 1, 2].map((col) => (
+            <rect
+              key={`${row}-${col}`}
+              x={11 + col * 5}
+              y={122 + row * 5}
+              width="3.5"
+              height="3.5"
+              rx="0.5"
+              fill={row === 0 && col === 1 ? "#f59e0b" : "#fde68a"}
+            />
+          )),
+        )}
+      </g>
+    );
+  }
+
+  if (pose === "notes") {
+    return (
+      <g>
+        <path
+          d="M40 124 Q24 122 18 134 Q24 142 34 136 Q38 130 42 126"
+          fill={`url(#${skinId}-skin)`}
+          stroke="#b8734a"
+          strokeWidth="1.2"
+          strokeLinejoin="round"
+        />
+        <rect x="4" y="120" width="18" height="24" rx="2" fill="#fef3c7" stroke="#ca8a04" strokeWidth="1" />
+        <path d="M7 126 H19 M7 131 H17 M7 136 H19" stroke="#ca8a04" strokeWidth="1" opacity="0.6" />
+        <path d="M20 128 L24 132 L20 136" fill="none" stroke="#57534e" strokeWidth="1.2" />
+      </g>
+    );
+  }
+
+  if (pose === "cheers") {
+    return (
+      <path
+        d="M38 118 Q20 100 28 82 Q36 78 42 88 Q40 104 44 118"
+        fill={`url(#${skinId}-skin)`}
+        stroke="#b8734a"
+        strokeWidth="1.2"
+        strokeLinejoin="round"
+      />
+    );
+  }
+
+  return (
+    <g className={waving ? "callebi-wave-arm" : undefined}>
+      <path
+        d="M42 122 Q18 118 14 138 Q20 146 32 138 Q36 128 44 126"
+        fill={`url(#${skinId}-skin)`}
+        stroke="#b8734a"
+        strokeWidth="1.2"
+        strokeLinejoin="round"
+      />
+      <circle cx="18" cy="140" r="7" fill={`url(#${skinId}-skin)`} stroke="#b8734a" strokeWidth="1" />
+      <ellipse cx="16" cy="139" rx="2" ry="1.2" fill="#fca5a5" opacity="0.35" />
+    </g>
+  );
+}
+
+function RightArm({
+  pose,
+  tipsy,
+  skinId,
+}: {
+  pose: CallebiPose;
+  tipsy: boolean;
+  skinId: string;
+}) {
+  if (pose === "cheers") {
+    return (
+      <g className={tipsy ? "callebi-swirl" : undefined}>
+        <path
+          d="M118 118 Q132 96 118 78 Q108 72 102 86 Q108 102 116 118"
+          fill={`url(#${skinId}-skin)`}
+          stroke="#b8734a"
+          strokeWidth="1.2"
+          strokeLinejoin="round"
+        />
+        <g transform="translate(-8, -18)">
+          <WhiskeyGlass id={skinId} />
+        </g>
+      </g>
+    );
+  }
+
+  return (
+    <g className={tipsy ? "callebi-swirl" : undefined}>
+      <path
+        d="M118 122 Q138 118 144 132 Q138 142 126 136 Q120 128 116 124"
+        fill={`url(#${skinId}-skin)`}
+        stroke="#b8734a"
+        strokeWidth="1.2"
+        strokeLinejoin="round"
+      />
+      <circle cx="142" cy="134" r="7" fill={`url(#${skinId}-skin)`} stroke="#b8734a" strokeWidth="1" />
+      <WhiskeyGlass id={skinId} />
+    </g>
+  );
+}
+
+export function CallebiMascot({ mood, pose, blinking, waving, poking }: MascotProps) {
   const rawId = useId().replace(/:/g, "");
   const tipsy = mood === "drunk";
   const hype = mood === "hype";
@@ -283,31 +406,9 @@ export function CallebiMascot({ mood, blinking, waving, poking }: MascotProps) {
         <path d="M74 126 L80 132 L86 126 L80 138 Z" fill="#b45309" stroke="#92400e" strokeWidth="1" strokeLinejoin="round" />
         <circle cx="80" cy="132" r="2.5" fill="#f59e0b" />
 
-        {/* braço esquerdo — aceno */}
-        <g className={waving ? "callebi-wave-arm" : undefined}>
-          <path
-            d="M42 122 Q18 118 14 138 Q20 146 32 138 Q36 128 44 126"
-            fill={`url(#${rawId}-skin)`}
-            stroke="#b8734a"
-            strokeWidth="1.2"
-            strokeLinejoin="round"
-          />
-          <circle cx="18" cy="140" r="7" fill={`url(#${rawId}-skin)`} stroke="#b8734a" strokeWidth="1" />
-          <ellipse cx="16" cy="139" rx="2" ry="1.2" fill="#fca5a5" opacity="0.35" />
-        </g>
+        <LeftArm pose={pose} waving={waving} skinId={rawId} />
 
-        {/* braço direito + copo */}
-        <g className={tipsy ? "callebi-swirl" : undefined}>
-          <path
-            d="M118 122 Q138 118 144 132 Q138 142 126 136 Q120 128 116 124"
-            fill={`url(#${rawId}-skin)`}
-            stroke="#b8734a"
-            strokeWidth="1.2"
-            strokeLinejoin="round"
-          />
-          <circle cx="142" cy="134" r="7" fill={`url(#${rawId}-skin)`} stroke="#b8734a" strokeWidth="1" />
-          <WhiskeyGlass id={rawId} />
-        </g>
+        <RightArm pose={pose} tipsy={tipsy} skinId={rawId} />
 
         {/* pescoço */}
         <rect x="72" y="108" width="16" height="12" rx="5" fill={`url(#${rawId}-skin)`} />

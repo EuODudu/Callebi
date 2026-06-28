@@ -18,7 +18,7 @@ import {
   type BookingState,
 } from "@/lib/scheduler/types";
 import { useCallebi } from "@/components/scheduler/Callebi";
-import { reactToNome, reactToProximidade, reactToMotivo } from "@/lib/scheduler/callebi";
+import { reactToNome, reactToProximidade, reactToMotivo, reactToValidationErrors } from "@/lib/scheduler/callebi";
 
 type Props = {
   data: BookingState["personal"];
@@ -38,7 +38,9 @@ export function StepPersonal({ data, onChange, onNext }: Props) {
   const submit = () => {
     const result = personalSchema.safeParse(data);
     if (!result.success) {
-      setErrors(collectZodErrors(result.error));
+      const nextErrors = collectZodErrors(result.error);
+      setErrors(nextErrors);
+      speak(reactToValidationErrors(nextErrors));
       return;
     }
     setErrors({});

@@ -1,14 +1,19 @@
-const steps = ["Dados", "Data", "Detalhes", "Revisão"];
+const steps = [
+  { label: "Quem é você?", short: "Você" },
+  { label: "Quando?", short: "Data" },
+  { label: "Onde e quantos?", short: "Detalhes" },
+  { label: "Bora pro Zap?", short: "Revisão" },
+];
 
 export function StepIndicator({ current }: { current: number }) {
   return (
     <div className="mb-8 flex items-center justify-between gap-2">
-      {steps.map((label, i) => {
+      {steps.map((step, i) => {
         const n = i + 1;
         const active = n === current;
         const done = n < current;
         return (
-          <div key={label} className="flex flex-1 items-center gap-2">
+          <div key={step.short} className="flex flex-1 items-center gap-2">
             <div className="flex flex-col items-center gap-1.5">
               <div
                 className={[
@@ -28,8 +33,9 @@ export function StepIndicator({ current }: { current: number }) {
                   active ? "text-foreground" : "text-muted-foreground",
                 ].join(" ")}
               >
-                {label}
+                {step.short}
               </span>
+              <span className="hidden text-[10px] text-muted-foreground/80 md:block">{step.label}</span>
             </div>
             {i < steps.length - 1 && (
               <div
