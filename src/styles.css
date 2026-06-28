@@ -159,12 +159,12 @@
 
   .callebi-swirl {
     animation: callebi-swirl 1.4s ease-in-out infinite;
-    transform-origin: 92px 88px;
+    transform-origin: 132px 112px;
   }
 
   .callebi-wave-arm {
     animation: callebi-wave 0.55s ease-in-out 2;
-    transform-origin: 18px 78px;
+    transform-origin: 24px 132px;
   }
 
   .callebi-pop {
