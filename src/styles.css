@@ -152,6 +152,18 @@
 }
 
 /* ── Callebi mascote ─────────────────────────────────────────────────── */
+.callebi-sticky {
+  position: sticky;
+  top: 1rem;
+  align-self: start;
+}
+
+@media (min-width: 1024px) {
+  .callebi-sticky {
+    top: 2rem;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .callebi-float {
     animation: callebi-float 3.5s ease-in-out infinite;

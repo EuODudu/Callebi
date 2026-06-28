@@ -76,8 +76,8 @@ function Wizard() {
 
   return (
     <main className="min-h-screen bg-background px-4 py-10 sm:py-16">
-      <div className="mx-auto max-w-2xl">
-        <header className="mb-8 text-center">
+      <div className="mx-auto max-w-5xl">
+        <header className="mb-8 text-center lg:mb-10">
           <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
             Agenda oficial do
           </p>
@@ -89,55 +89,59 @@ function Wizard() {
           </p>
         </header>
 
-        <div className="mb-6">
-          <CallebiStage step={step} />
-        </div>
+        <div className="grid items-start gap-6 lg:grid-cols-[minmax(260px,320px)_1fr] lg:gap-8">
+          <aside className="callebi-sticky z-20 lg:max-w-sm">
+            <CallebiStage step={step} layout="sidebar" />
+          </aside>
 
-        <div className="rounded-2xl border bg-card p-6 shadow-sm sm:p-8">
-          <StepIndicator current={step} />
+          <div className="min-w-0">
+            <div className="rounded-2xl border bg-card p-6 shadow-sm sm:p-8">
+              <StepIndicator current={step} />
 
-          <div key={step} className="animate-in fade-in slide-in-from-right-3 duration-300">
-            {step === 1 && (
-              <StepPersonal
-                data={booking.personal}
-                onChange={(personal) => setBooking({ ...booking, personal })}
-                onNext={() => setStep(2)}
-              />
-            )}
-            {step === 2 && (
-              <StepDateTime
-                data={booking.dateTime}
-                onChange={(dateTime) => setBooking({ ...booking, dateTime })}
-                onBack={() => setStep(1)}
-                onNext={() => setStep(3)}
-              />
-            )}
-            {step === 3 && (
-              <StepDetails
-                data={booking.details}
-                onChange={(details) => setBooking({ ...booking, details })}
-                onBack={() => setStep(2)}
-                onNext={() => setStep(4)}
-              />
-            )}
-            {step === 4 && <StepReview booking={booking} onBack={() => setStep(3)} />}
+              <div key={step} className="animate-in fade-in slide-in-from-right-3 duration-300">
+                {step === 1 && (
+                  <StepPersonal
+                    data={booking.personal}
+                    onChange={(personal) => setBooking({ ...booking, personal })}
+                    onNext={() => setStep(2)}
+                  />
+                )}
+                {step === 2 && (
+                  <StepDateTime
+                    data={booking.dateTime}
+                    onChange={(dateTime) => setBooking({ ...booking, dateTime })}
+                    onBack={() => setStep(1)}
+                    onNext={() => setStep(3)}
+                  />
+                )}
+                {step === 3 && (
+                  <StepDetails
+                    data={booking.details}
+                    onChange={(details) => setBooking({ ...booking, details })}
+                    onBack={() => setStep(2)}
+                    onNext={() => setStep(4)}
+                  />
+                )}
+                {step === 4 && <StepReview booking={booking} onBack={() => setStep(3)} />}
+              </div>
+            </div>
+
+            <div className="mt-6 flex flex-col items-center gap-2 lg:items-start">
+              <p className="text-center text-xs text-muted-foreground lg:text-left">
+                Ao enviar, cai direto no meu Zap. Se eu demorar pra responder, é porque tô honrando
+                algum compromisso etílico. 🍻
+              </p>
+              {hasDraftContent(booking) && (
+                <button
+                  type="button"
+                  onClick={resetDraft}
+                  className="text-xs text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
+                >
+                  Limpar rascunho salvo
+                </button>
+              )}
+            </div>
           </div>
-        </div>
-
-        <div className="mt-6 flex flex-col items-center gap-2">
-          <p className="text-center text-xs text-muted-foreground">
-            Ao enviar, cai direto no meu Zap. Se eu demorar pra responder, é porque tô honrando algum
-            compromisso etílico. 🍻
-          </p>
-          {hasDraftContent(booking) && (
-            <button
-              type="button"
-              onClick={resetDraft}
-              className="text-xs text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
-            >
-              Limpar rascunho salvo
-            </button>
-          )}
         </div>
       </div>
     </main>

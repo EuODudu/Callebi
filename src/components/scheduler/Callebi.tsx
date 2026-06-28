@@ -77,9 +77,10 @@ function hasFinePointer(): boolean {
   return window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 }
 
-export function CallebiStage({ step }: { step: number }) {
+export function CallebiStage({ step, layout = "inline" }: { step: number; layout?: "inline" | "sidebar" }) {
   const { line, speak } = useCallebi();
   const pose = poseForStep(step);
+  const isSidebar = layout === "sidebar";
   const [shown, setShown] = useState(line.text);
   const [blinking, setBlinking] = useState(false);
   const [waving, setWaving] = useState(false);
@@ -150,7 +151,12 @@ export function CallebiStage({ step }: { step: number }) {
         : "";
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-amber-200/60 bg-gradient-to-br from-amber-50 via-card to-orange-50/80 p-4 shadow-sm sm:p-6 dark:border-amber-900/40 dark:from-amber-950/30 dark:via-card dark:to-orange-950/20">
+    <div
+      className={[
+        "relative overflow-hidden rounded-3xl border border-amber-200/60 bg-gradient-to-br from-amber-50 via-card to-orange-50/80 shadow-sm backdrop-blur-sm transition-shadow duration-300 dark:border-amber-900/40 dark:from-amber-950/30 dark:via-card dark:to-orange-950/20",
+        isSidebar ? "p-3 sm:p-4" : "p-4 sm:p-6",
+      ].join(" ")}
+    >
       <div
         className="pointer-events-none absolute -left-8 -top-8 h-32 w-32 rounded-full bg-amber-300/20 blur-2xl"
         aria-hidden
@@ -164,7 +170,14 @@ export function CallebiStage({ step }: { step: number }) {
         Bartender oficial · clique no Callebi
       </p>
 
-      <div className="relative flex flex-col items-center gap-4 sm:flex-row sm:items-start sm:gap-5">
+      <div
+        className={[
+          "relative flex",
+          isSidebar
+            ? "flex-col items-center gap-3"
+            : "flex-col items-center gap-4 sm:flex-row sm:items-start sm:gap-5",
+        ].join(" ")}
+      >
         <button
           type="button"
           onClick={handlePoke}
@@ -187,12 +200,19 @@ export function CallebiStage({ step }: { step: number }) {
 
         <div
           key={line.id}
-          className={`callebi-pop relative w-full max-w-md flex-1 rounded-2xl rounded-tl-lg border border-amber-200/80 bg-card/95 px-4 py-3.5 text-left shadow-lg backdrop-blur-sm sm:mt-3 ${bubbleClass}`}
+          className={`callebi-pop relative w-full flex-1 rounded-2xl border border-amber-200/80 bg-card/95 px-4 py-3.5 text-left shadow-lg backdrop-blur-sm ${isSidebar ? "rounded-t-lg" : "max-w-md rounded-tl-lg sm:mt-3"} ${bubbleClass}`}
         >
-          <span
-            className="absolute -left-2 top-5 hidden h-4 w-4 rotate-45 border-b border-l border-amber-200/80 bg-card/95 sm:block"
-            aria-hidden
-          />
+          {isSidebar ? (
+            <span
+              className="absolute -top-2 left-1/2 h-4 w-4 -translate-x-1/2 rotate-45 border-l border-t border-amber-200/80 bg-card/95"
+              aria-hidden
+            />
+          ) : (
+            <span
+              className="absolute -left-2 top-5 hidden h-4 w-4 rotate-45 border-b border-l border-amber-200/80 bg-card/95 sm:block"
+              aria-hidden
+            />
+          )}
           <div className="mb-2 flex items-center gap-2">
             <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-900 dark:bg-amber-900/50 dark:text-amber-100">
               {MOOD_LABEL[line.mood]}
