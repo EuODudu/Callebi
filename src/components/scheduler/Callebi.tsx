@@ -30,8 +30,8 @@ export function useCallebi(): CallebiApi {
 
 const FIRST_LINE: SpokenLine = {
   id: 0,
-  text: "E aí! Eu sou o Callebi — anfitrião da casa e especialista em uísque. Clica em mim se quiser papo.",
-  mood: "happy",
+  text: "Bem-vindo ao boteco virtual — modo escuro porque luz forte me lembra ressaca. Bora agendar?",
+  mood: "drunk",
 };
 
 export function CallebiProvider({ children }: { children: ReactNode }) {
@@ -153,7 +153,9 @@ export function CallebiStage({ step, layout = "inline" }: { step: number; layout
   return (
     <div
       className={[
-        "relative overflow-hidden rounded-3xl border border-amber-200/60 bg-gradient-to-br from-amber-50 via-card to-orange-50/80 shadow-sm backdrop-blur-sm transition-shadow duration-300 dark:border-amber-900/40 dark:from-amber-950/30 dark:via-card dark:to-orange-950/20",
+        "relative overflow-hidden rounded-3xl border shadow-sm backdrop-blur-sm transition-shadow duration-300",
+        "border-amber-800/35 bg-gradient-to-br from-stone-900/90 via-card to-amber-950/40",
+        "dark:border-amber-700/30 dark:from-stone-950/80 dark:via-card dark:to-amber-950/50",
         isSidebar ? "p-3 sm:p-4" : "p-4 sm:p-6",
       ].join(" ")}
     >
@@ -166,7 +168,7 @@ export function CallebiStage({ step, layout = "inline" }: { step: number; layout
         aria-hidden
       />
 
-      <p className="relative mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-800/70 dark:text-amber-200/70">
+      <p className="relative mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-200/80">
         Bartender oficial · clique no Callebi
       </p>
 
@@ -182,7 +184,7 @@ export function CallebiStage({ step, layout = "inline" }: { step: number; layout
           type="button"
           onClick={handlePoke}
           onMouseEnter={handleHover}
-          className="group relative shrink-0 rounded-3xl bg-amber-100/50 p-2 outline-none ring-amber-300/0 transition-all hover:scale-[1.02] hover:bg-amber-100/80 hover:ring-4 focus-visible:ring-4 focus-visible:ring-amber-400/40 active:scale-[0.98] dark:bg-amber-950/30 dark:hover:bg-amber-950/50"
+          className="group relative shrink-0 rounded-3xl bg-amber-950/40 p-2 outline-none ring-amber-500/0 transition-all hover:scale-[1.02] hover:bg-amber-900/50 hover:ring-4 hover:ring-amber-600/25 focus-visible:ring-4 focus-visible:ring-amber-500/40 active:scale-[0.98]"
           aria-label="Callebi — clique para conversar"
           title="Clica aí, prometo que sou simpático"
         >
@@ -200,21 +202,21 @@ export function CallebiStage({ step, layout = "inline" }: { step: number; layout
 
         <div
           key={line.id}
-          className={`callebi-pop relative w-full flex-1 rounded-2xl border border-amber-200/80 bg-card/95 px-4 py-3.5 text-left shadow-lg backdrop-blur-sm ${isSidebar ? "rounded-t-lg" : "max-w-md rounded-tl-lg sm:mt-3"} ${bubbleClass}`}
+          className={`callebi-pop relative w-full flex-1 rounded-2xl border border-amber-800/40 bg-card/95 px-4 py-3.5 text-left shadow-lg backdrop-blur-sm ${isSidebar ? "rounded-t-lg" : "max-w-md rounded-tl-lg sm:mt-3"} ${bubbleClass}`}
         >
           {isSidebar ? (
             <span
-              className="absolute -top-2 left-1/2 h-4 w-4 -translate-x-1/2 rotate-45 border-l border-t border-amber-200/80 bg-card/95"
+              className="absolute -top-2 left-1/2 h-4 w-4 -translate-x-1/2 rotate-45 border-l border-t border-amber-800/40 bg-card/95"
               aria-hidden
             />
           ) : (
             <span
-              className="absolute -left-2 top-5 hidden h-4 w-4 rotate-45 border-b border-l border-amber-200/80 bg-card/95 sm:block"
+              className="absolute -left-2 top-5 hidden h-4 w-4 rotate-45 border-b border-l border-amber-800/40 bg-card/95 sm:block"
               aria-hidden
             />
           )}
           <div className="mb-2 flex items-center gap-2">
-            <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-900 dark:bg-amber-900/50 dark:text-amber-100">
+            <span className="rounded-full bg-amber-950/80 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-100">
               {MOOD_LABEL[line.mood]}
             </span>
             <span className="text-xs text-muted-foreground">Callebi diz:</span>

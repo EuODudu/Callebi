@@ -6,6 +6,7 @@ import { StepDateTime } from "@/components/scheduler/StepDateTime";
 import { StepDetails } from "@/components/scheduler/StepDetails";
 import { StepReview } from "@/components/scheduler/StepReview";
 import { CallebiProvider, CallebiStage, useCallebi } from "@/components/scheduler/Callebi";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { greetingFor } from "@/lib/scheduler/callebi";
 import {
   clearBookingDraft,
@@ -77,7 +78,10 @@ function Wizard() {
   return (
     <main className="min-h-screen bg-background px-4 py-10 sm:py-16">
       <div className="mx-auto max-w-5xl">
-        <header className="mb-8 text-center lg:mb-10">
+        <header className="relative mb-8 text-center lg:mb-10">
+          <div className="absolute right-0 top-0">
+            <ThemeToggle />
+          </div>
           <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
             Agenda oficial do
           </p>
@@ -85,7 +89,7 @@ function Wizard() {
             Callebi 🥃
           </h1>
           <p className="mt-3 text-sm text-muted-foreground">
-            Marca um horário comigo — prometo tentar não chegar bêbado. Tentar.
+            Marca um horário comigo — ambiente de boteco, modo escuro, zero julgamento.
           </p>
         </header>
 

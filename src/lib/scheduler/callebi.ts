@@ -18,9 +18,16 @@ function firstName(nome: string): string {
 // ── Saudações por passo ────────────────────────────────────────────────
 const greetings: Record<number, readonly CallebiLine[]> = {
   1: [
+    {
+      text: "Modo escuro ligado — ambiente de boteco depois das 22h. Combina com uísque, né?",
+      mood: "drunk",
+    },
     { text: "E aí! Eu sou o Callebi. Me conta quem é você que eu já vou gostando.", mood: "happy" },
     { text: "Opa! Chegou bem. Bora começar: como é seu nome?", mood: "happy" },
-    { text: "Seja bem-vindo à minha agenda particular. Caprichada, né? Vamos lá.", mood: "wink" },
+    {
+      text: "Seja bem-vindo à minha agenda. Tema escuro porque luz forte me lembra ressaca.",
+      mood: "wink",
+    },
   ],
   2: [
     { text: "Agora a parte difícil: achar um dia em que eu NÃO esteja no bar.", mood: "wink" },
@@ -171,6 +178,8 @@ const idleLines: readonly CallebiLine[] = [
   { text: "Cochilei? Não, não... só descansando os olhos. Continua aí.", mood: "sleepy" },
   { text: "Psiu! Não me deixa falando sozinho.", mood: "wink" },
   { text: "Tô contando quantas gotas tem no meu copo. Spoiler: poucas.", mood: "drunk" },
+  { text: "No escuro eu brilho menos, mas brindo igual. Segue aí.", mood: "wink" },
+  { text: "Essa penumbra é estilo boteco VIP. Gostou?", mood: "drunk" },
 ];
 
 export function idleLine(): CallebiLine {
@@ -187,6 +196,7 @@ const pokeLines: readonly CallebiLine[] = [
   { text: "Se continuar clicando vou te colocar na fila do boteco.", mood: "wink" },
   { text: "Isso aí é carinho ou você tá testando se eu sou real?", mood: "happy" },
   { text: "Mais um clique e eu conto aquela história do chopp infinito.", mood: "drunk" },
+  { text: "No escuro eu pareço mais misterioso. Ou bêbado. Tanto faz.", mood: "wink" },
 ];
 
 export function pokeLine(): CallebiLine {
@@ -234,4 +244,26 @@ export function poseForStep(step: number): CallebiPose {
   if (step === 3) return "notes";
   if (step === 4) return "cheers";
   return "wave";
+}
+
+// ── Modo escuro / claro ──────────────────────────────────────────────────
+const darkModeLines: readonly CallebiLine[] = [
+  { text: "Pronto! Agora sim — clima de boteco fechado, copo na mão.", mood: "drunk" },
+  { text: "Escureci tudo. Luz forte é coisa de quem acordou cedo.", mood: "wink" },
+  { text: "Modo escuro ativado. O uísque brilha mais, eu também.", mood: "happy" },
+];
+
+const lightModeLines: readonly CallebiLine[] = [
+  { text: "UAU, luz! Meus olhos! ...Tá, continua, mas com pena de mim.", mood: "sleepy" },
+  { text: "Clareou demais. Parece que alguém abriu o boteco às 8h da manhã.", mood: "drunk" },
+  { text: "Modo claro? Tá bom... mas eu vou precisar de óculos escuros.", mood: "wink" },
+  { text: "Isso aí me lembra ressaca iluminada. Volta pro escuro quando puder.", mood: "thinking" },
+];
+
+export function reactToThemeChange(toDark: boolean): CallebiLine {
+  return pick(toDark ? darkModeLines : lightModeLines);
+}
+
+export function darkModeWelcome(): CallebiLine {
+  return pick(darkModeLines);
 }
